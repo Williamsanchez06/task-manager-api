@@ -3,7 +3,7 @@ import validatorHandler from "../middlewares/validatorHandler.js";
 import {loginSchema} from "../schemas/authSchema.js";
 import logger from "../utils/logger.js";
 import {login, renewToken} from "../controllers/authController.js";
-import {validateJWT} from "../middlewares/validateJwt.js";
+import {validateJwtHandler} from "../middlewares/validateJwtHandler.js";
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.use((req, res, next) => {
 });
 
 router.post("/", validatorHandler(loginSchema, "body"), login);
-router.post("/renewToken", validateJWT, renewToken);
+router.post("/renewToken", validateJwtHandler, renewToken);
 
 router.use((req, res) => {
     res.status(404).json({ message: "Ruta no encontrada" });

@@ -7,7 +7,7 @@ import {
     getTasks, shareTask,
     updateTask
 } from "../controllers/taskController.js";
-import { validateJWT }  from "../middlewares/validateJwt.js";
+import { validateJwtHandler }  from "../middlewares/validateJwtHandler.js";
 import validatorHandler from "../middlewares/validatorHandler.js";
 import {createTaskSchema, getTaskSchema, shareTaskSchema, updateTaskSchema} from "../schemas/taskSchema.js";
 import logger from "../utils/logger.js";
@@ -19,13 +19,13 @@ router.use((req, res, next) => {
     next();
 });
 
-router.post("/", validateJWT, validatorHandler(createTaskSchema, "body"), createTask);
-router.get("/", validateJWT, getTasks);
-router.get("/shared", validateJWT, getSharedTasks);
-router.get("/:id", validateJWT, validatorHandler(getTaskSchema, "params"), getTaskById);
-router.put("/:id", validateJWT, validatorHandler(getTaskSchema, "params"), validatorHandler(updateTaskSchema, "body"), updateTask);
-router.delete("/:id", validateJWT, validatorHandler(getTaskSchema, "params"), deleteTask);
-router.post("/:id/share", validateJWT, validatorHandler(getTaskSchema, "params"), validatorHandler(shareTaskSchema, "body"), shareTask);
+router.post("/", validateJwtHandler, validatorHandler(createTaskSchema, "body"), createTask);
+router.get("/", validateJwtHandler, getTasks);
+router.get("/shared", validateJwtHandler, getSharedTasks);
+router.get("/:id", validateJwtHandler, validatorHandler(getTaskSchema, "params"), getTaskById);
+router.put("/:id", validateJwtHandler, validatorHandler(getTaskSchema, "params"), validatorHandler(updateTaskSchema, "body"), updateTask);
+router.delete("/:id", validateJwtHandler, validatorHandler(getTaskSchema, "params"), deleteTask);
+router.post("/:id/share", validateJwtHandler, validatorHandler(getTaskSchema, "params"), validatorHandler(shareTaskSchema, "body"), shareTask);
 
 router.use((req, res) => {
     res.status(404).json({ message: "Ruta no encontrada" });

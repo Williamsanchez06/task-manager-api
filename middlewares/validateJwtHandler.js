@@ -2,7 +2,7 @@ import { response } from "express";
 import jwt from "jsonwebtoken";
 
 
-export const validateJWT = async (req, res = response, next) => {
+export const validateJwtHandler = async (req, res = response, next) => {
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
