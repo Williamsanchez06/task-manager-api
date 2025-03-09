@@ -1,4 +1,5 @@
 import boom from "@hapi/boom";
+import bcrypt from "bcrypt";
 
 class UserService {
   constructor(db) {
@@ -6,6 +7,10 @@ class UserService {
   }
 
   async create(data) {
+
+    const saltRounds = 10;
+    data.password = await bcrypt.hash(data.password, saltRounds);
+
     const newUser = await this.db.models.User.create(data);
     return newUser;
   }

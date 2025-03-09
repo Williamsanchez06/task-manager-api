@@ -5,9 +5,9 @@ import corsMiddleware from './config/cors.js';
 import { dbConnection } from './db/db.js';
 import {
   logErrors,
-  errorHandler,
   boomErrorHandler,
   queryOrmErrorHandler,
+  generalErrorHandler,
 } from './middlewares/errorHandler.js';
 
 dotenv.config();
@@ -23,10 +23,11 @@ async function initialize() {
   try {
     await dbConnection();
 
+    // Middlewares de manejo de errores
     app.use(logErrors);
-    app.use(queryOrmErrorHandler);
     app.use(boomErrorHandler);
-    app.use(errorHandler);
+    app.use(queryOrmErrorHandler);
+    app.use(generalErrorHandler);
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
