@@ -9,6 +9,10 @@ const UserSchema = {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
     },
+    name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+    },
     email: {
         allowNull: false,
         type: DataTypes.STRING,

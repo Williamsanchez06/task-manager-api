@@ -6,6 +6,10 @@ const id = Joi.string().uuid().messages({
   "any.required": "El id es obligatorio"
 });
 
+const name = Joi.string().messages({
+  "any.required": "El nombre es obligatorio"
+});
+
 const email = Joi.string().email().messages({
   "string.email": "El correo debe tener un formato válido",
   "any.required": "El correo es obligatorio"
@@ -17,6 +21,7 @@ const password = Joi.string().min(8).messages({
 });
 
 const createUserSchema = Joi.object({
+  name: name.required(),
   email: email.required(),
   password: password.required()
 });

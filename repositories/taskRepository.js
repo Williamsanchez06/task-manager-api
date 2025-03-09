@@ -30,7 +30,7 @@ class TaskRepository {
             offset,
             limit,
             order: [["createdAt", "DESC"]],
-            include: [{ model: this.db.models.User, as: "sharedUser", attributes: ["id", "email"] }]
+            include: [{ model: this.db.models.User, as: "sharedUser", attributes: ["id","name","email"] }]
         });
     }
 
@@ -59,7 +59,7 @@ class TaskRepository {
             offset,
             limit,
             order: [["createdAt", "DESC"]],
-            include: [{ model: this.db.models.User, as: "owner", attributes: ["id", "email"] }]
+            include: [{ model: this.db.models.User, as: "owner", attributes: ["id", "name","email"] }]
         });
     }
 }
