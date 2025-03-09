@@ -13,7 +13,7 @@ router.use((req, res, next) => {
 });
 
 router.post("/", validatorHandler(loginSchema, "body"), login);
-router.post("/renewToken", validateJwtHandler, renewToken);
+router.post("/renew-token", validateJwtHandler, renewToken);
 
 router.use((req, res) => {
     res.status(404).json({ message: "Ruta no encontrada" });
