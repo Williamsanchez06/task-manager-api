@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const id = Joi.number().integer();
+const id = Joi.string().uuid();
 const email = Joi.string().email();
 const password = Joi.string().min(8);
 // const role = Joi.string().min(5);
@@ -17,7 +17,7 @@ const updateUserSchema = Joi.object({
 });
 
 const getUserSchema = Joi.object({
-  id: id.required(),
+  id: id.required()
 });
 
 export { createUserSchema, updateUserSchema, getUserSchema };

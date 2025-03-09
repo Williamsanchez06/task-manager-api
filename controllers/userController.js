@@ -1,5 +1,6 @@
 import UserService from "../services/userService.js";
 import logger from "../utils/logger.js";
+import bcrypt from "bcrypt";
 
 const service = new UserService();
 
@@ -29,9 +30,17 @@ export const getUserId = async (req, res, next) => {
 export const createUser = async (req, res, next) => {
   try {
     const body = req.body;
+
+    // Encriptar la contraseña
+    const saltRounds = 10;
+    body.password = await bcrypt.hash(body.password, saltRounds);
+
     const newUser = await service.create(body);
     logger.info('Usuario creado exitosamente.');
-    res.status(201).json(newUser);
+    res.json({
+        message: 'Usuario creado exitosamente.'
+    });
+
   } catch (error) {
     logger.error('Error al crear usuario:', error);
     next(error);

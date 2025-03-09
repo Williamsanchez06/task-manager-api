@@ -19,14 +19,22 @@ app.use(corsMiddleware);
 
 routerApi(app);
 
-dbConnection();
+async function initialize() {
+  try {
+    await dbConnection();
 
-app.use(logErrors);
-app.use(queryOrmErrorHandler);
-app.use(boomErrorHandler);
-app.use(errorHandler);
+    app.use(logErrors);
+    app.use(queryOrmErrorHandler);
+    app.use(boomErrorHandler);
+    app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Servidor corriendo en el puerto ${PORT}`);
-});
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`✅ Servidor corriendo en el puerto ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Error durante la inicialización:', error);
+  }
+}
+
+initialize();

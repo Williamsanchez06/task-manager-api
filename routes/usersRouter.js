@@ -29,9 +29,4 @@ router.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
 });
 
-router.use((err, req, res, next) => {
-  logger.error(`Error: ${err.message}`);
-  res.status(500).json({ message: "Internal Server Error" });
-});
-
 export default router;

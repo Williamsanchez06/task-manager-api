@@ -10,19 +10,17 @@ class UserService {
   }
 
   async find() {
-    const rta = await db.models.User.findAll({
-      include: ["customer"],
-    });
+    const rta = await db.models.User.findAll();
     return rta;
   }
 
   async findOne(id) {
-    const usuario = await db.models.User.findByPk(id);
+    const user = await db.models.User.findByPk(id);
 
-    if (!usuario) {
+    if (!user) {
       throw boom.notFound("Usuario no Encontrado");
     }
-    return usuario;
+    return user;
   }
 
 }
