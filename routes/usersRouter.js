@@ -11,6 +11,7 @@ import {
 } from "../controllers/userController.js";
 
 import logger from "../utils/logger.js";
+import {validateJwtHandler} from "../middlewares/validateJwtHandler.js";
 
 const router = express.Router();
 
@@ -19,9 +20,9 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/", getUsers);
+router.get("/", validateJwtHandler, getUsers);
 
-router.get("/:id", validatorHandler(getUserSchema, "params"), getUserId);
+router.get("/:id", validatorHandler(getUserSchema, "params"), validateJwtHandler, getUserId);
 
 router.post("/", validatorHandler(createUserSchema, "body"), createUser);
 
