@@ -1,8 +1,9 @@
 import UserService from "../services/userService.js";
 import logger from "../utils/logger.js";
 import bcrypt from "bcrypt";
+import {db} from "../db/db.js";
 
-const service = new UserService();
+const service = new UserService(db);
 
 export const getUsers = async (req, res, next) => {
   try {

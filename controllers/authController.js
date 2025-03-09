@@ -1,7 +1,8 @@
 import AuthService from "../services/authService.js";
 import logger from "../utils/logger.js";
+import {db} from "../db/db.js";
 
-const authService = new AuthService();
+const authService = new AuthService(db);
 
 export const login = async (req, res, next) => {
     try {

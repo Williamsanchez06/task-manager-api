@@ -1,11 +1,15 @@
 import bcrypt from "bcrypt";
 import {generateJWT} from "../utils/jwt.js";
 import boom from "@hapi/boom";
-import { db } from "../db/db.js";
 
 class AuthService {
+
+    constructor(db) {
+        this.db = db;
+    }
+
     async login(email, password) {
-        const user = await db.models.User.findOne({ where: { email } });
+        const user = await this.db.models.User.findOne({ where: { email } });
         if (!user) {
             throw boom.notFound("Email no encontrado");
         }
