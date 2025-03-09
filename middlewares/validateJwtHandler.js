@@ -1,24 +1,29 @@
-import { response } from "express";
-import jwt from "jsonwebtoken";
+import { verifyJWT } from "../utils/jwt.js";
+import logger from "../utils/logger.js";
 
-
-export const validateJwtHandler = async (req, res = response, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+export const validateJwtHandler = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+        const token = authHeader.split(" ")[1];
         try {
-            token = req.headers.authorization.split(" ")[1];
-            const { uuid_user, email } = jwt.verify(token, process.env.SECRET_JWT_SEED);
+            const { uuid_user, email } = verifyJWT(token);
             req.uuid_user = uuid_user;
             req.email = email;
             return next();
         } catch (error) {
-            const e = new Error('Token no valido');
-            return res.status(403).json({ msg: e.message });
+            logger.error("JWT validation error", error);
+            return res.status(403).json({
+                statusCode: 403,
+                error: "Forbidden",
+                message: "Token no válido",
+            });
         }
+    } else {
+        return res.status(403).json({
+            statusCode: 403,
+            error: "Forbidden",
+            message: "Token no válido o inexistente",
+        });
     }
-    if (!token) {
-        const error = new Error('Token no valido o Inexistente');
-        return res.status(403).json({ msg: error.message });
-    }
-    next();
 };
+
