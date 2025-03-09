@@ -50,6 +50,12 @@ const TaskSchema = {
 };
 
 class Task extends Model {
+
+    static associate(models) {
+        this.belongsTo(models.User, { as: "sharedUser", foreignKey: "sharedUserId" });
+        this.belongsTo(models.User, { as: "owner", foreignKey: "ownerId" });
+    }
+
     static config(sequelize) {
         return {
             sequelize,

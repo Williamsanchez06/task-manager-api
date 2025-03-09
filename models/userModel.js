@@ -27,6 +27,11 @@ const UserSchema = {
 };
 
 class User extends Model {
+    static associate(models) {
+        this.hasMany(models.Task, { as: "tasksOwned", foreignKey: "ownerId" });
+        this.hasMany(models.Task, { as: "tasksShared", foreignKey: "sharedUserId" });
+    }
+
     static config(sequelize) {
         return {
             sequelize,
