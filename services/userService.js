@@ -11,9 +11,9 @@ class UserService {
 
     const existingUser = await this.repository.findUserByEmail(data.email);
 
-    // if (existingUser) {
-    //   throw boom.conflict(`Ya existe un usuario con el correo ${data.email}`);
-    // }
+    if (existingUser) {
+      throw boom.conflict(`Ya existe un usuario con el correo ${data.email}`);
+    }
 
     data.password = await encryptPassword(data.password);
     const newUser = await this.repository.createUser(data);
