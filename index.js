@@ -13,7 +13,6 @@ import {
 dotenv.config();
 
 const app = express();
-
 app.use(express.json());
 app.use(corsMiddleware);
 
@@ -21,6 +20,7 @@ routerApi(app);
 
 async function initialize() {
   try {
+    // Inicializar DB con config
     await dbConnection();
 
     // Middlewares de manejo de errores
@@ -32,6 +32,7 @@ async function initialize() {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`✅ Servidor corriendo en el puerto ${PORT}`);
+      console.log(`Entorno: ${process.env.NODE_ENV}`);
     });
   } catch (error) {
     console.error('Error durante la inicialización:', error);

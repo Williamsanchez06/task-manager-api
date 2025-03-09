@@ -6,13 +6,13 @@ import logger from '../utils/logger.js';
 dotenv.config();
 
 const db = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASSWORD,
+    process.env.DB_NAME || 'tasks',
+    process.env.DB_USER || 'postgres',
+    process.env.DB_PASSWORD || '12345',
     {
         dialect: 'postgres',
-        host: process.env.HOST_SQL,
-        port: process.env.PORT_SQL,
+        host: process.env.HOST_SQL || 'localhost',
+        port: process.env.PORT_SQL || 5432,
         define: {
             timestamps: false,
             freezeTableName: true,
@@ -25,7 +25,10 @@ const db = new Sequelize(
         },
         logging: false,
         dialectOptions: {
-            ssl: process.env.DB_SSL === 'true' ? { require: true, rejectUnauthorized: false } : false,
+            ssl:
+                process.env.DB_SSL === 'true'
+                    ? { require: true, rejectUnauthorized: false }
+                    : false,
         },
         schema: 'public',
     }
