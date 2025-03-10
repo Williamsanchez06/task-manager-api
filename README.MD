@@ -100,7 +100,7 @@ Se utiliza **PostgreSQL** como base de datos y **Sequelize** como ORM. El proyec
    NODE_ENV=development
 
    # Configuración de JWT
-   JWT_SECRET=clave-secreta
+   JWT_SECRET_SEED=clave-secreta
    JWT_EXPIRES_IN=1d
    ```
 

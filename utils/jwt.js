@@ -10,5 +10,5 @@ export const generateJWT = ( uuid_user, email) => {
 };
 
 export const verifyJWT = (token) => {
-    return jwt.verify(token, process.env.SECRET_JWT_SEED);
+    return jwt.verify(token, process.env.SECRET_JWT_SEED || "clave-secreta-por-defecto");
 };
