@@ -20,8 +20,8 @@ const TaskSchema = {
     },
     status: {
         allowNull: false,
-        type: DataTypes.ENUM("pending", "completed"),
-        defaultValue: "pending",
+        type: DataTypes.ENUM("PENDIENTE", "COMPLETADO"),
+        defaultValue: "PENDIENTE",
     },
     ownerId: {
         allowNull: false,

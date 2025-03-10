@@ -7,9 +7,14 @@ class UserRepository {
         return await this.db.models.User.create(data);
     }
 
-    async findAllUsers() {
-        return await this.db.models.User.findAll();
+    async findAllUsers(userId) {
+        return await this.db.models.User.findAll({
+            where: {
+                id: { [this.db.Sequelize.Op.ne]: userId } // Filtra usuarios donde el id sea diferente al usuario autenticado
+            }
+        });
     }
+
 
     async findUserById(id) {
         return await this.db.models.User.findByPk(id);

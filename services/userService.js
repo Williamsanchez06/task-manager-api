@@ -20,8 +20,8 @@ class UserService {
     return newUser;
   }
 
-  async find() {
-    return await this.repository.findAllUsers();
+  async find(userId) {
+    return await this.repository.findAllUsers(userId);
   }
 
   async findOne(id) {

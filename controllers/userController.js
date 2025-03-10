@@ -5,7 +5,7 @@ const service = new UserService(db);
 
 export const getUsers = async (req, res, next) => {
   try {
-    const users = await service.find();
+    const users = await service.find(req.uuid_user);
     res.status(200).json({
       message: "Usuarios obtenidos exitosamente.",
       data: users,

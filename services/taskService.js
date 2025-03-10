@@ -22,20 +22,40 @@ class TaskService {
     async findShared(userId, page = 1, pageSize = 10) {
         const offset = (page - 1) * pageSize;
         const limit = parseInt(pageSize, 10);
+
         const { count, rows } = await this.repository.findAndCountSharedTasks(userId, offset, limit);
-        return { tasks: rows, total: count, page, pageSize };
+
+        return {
+            tasks: rows.map(task => {
+                return {
+                    id: task.id,
+                    title: task.title,
+                    description: task.description,
+                    status: task.status,
+                    ownerId: task.ownerId,
+                    createdAt: task.createdAt,
+                    updatedAt: task.updatedAt,
+                    name: task.owner.name,
+                    email: task.owner.email
+                };
+            }),
+            total: count,
+            page,
+            pageSize
+        };
     }
 
-    async findOne(taskId, userId) {
-        const task = await this.repository.findTaskById(taskId, userId);
+
+    async findOne(taskId) {
+        const task = await this.repository.findTaskById(taskId);
         if (!task) {
             throw boom.notFound("Tarea no encontrada o no tienes permisos para acceder.");
         }
         return task;
     }
 
-    async update(taskId, userId, taskData) {
-        const task = await this.repository.findTaskById(taskId, userId);
+    async update(taskId, taskData) {
+        const task = await this.repository.findTaskById(taskId);
         if (!task) {
             throw boom.notFound("Tarea no encontrada o no tienes permisos para modificarla.");
         }
@@ -43,8 +63,8 @@ class TaskService {
         return updatedTask;
     }
 
-    async delete(taskId, userId) {
-        const task = await this.repository.findTaskById(taskId, userId);
+    async delete(taskId) {
+        const task = await this.repository.findTaskById(taskId);
         if (!task) {
             throw boom.notFound("Tarea no encontrada o no tienes permisos para eliminarla.");
         }
@@ -52,8 +72,8 @@ class TaskService {
         return { message: "Tarea eliminada correctamente." };
     }
 
-    async shareTask(taskId, ownerId, sharedUserId) {
-        const task = await this.repository.findTaskById(taskId, ownerId);
+    async shareTask(taskId, sharedUserId) {
+        const task = await this.repository.findTaskById(taskId);
         if (!task) {
             throw boom.notFound("Tarea no encontrada o no tienes permisos para compartirla.");
         }
@@ -62,6 +82,7 @@ class TaskService {
         if (!sharedUser) {
             throw boom.notFound("Usuario con quien deseas compartir no encontrado.");
         }
+        console.log(task)
         const updatedTask = await this.repository.shareTask(task, sharedUserId);
         return updatedTask;
     }

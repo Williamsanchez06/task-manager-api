@@ -12,6 +12,7 @@ class TaskRepository {
     buildWhereCondition(userId, search) {
         return {
             ownerId: userId,
+            sharedUserId : null,
             ...(search && {
                 [Op.or]: [
                     { title: { [Op.iLike]: `%${search}%` } },
@@ -34,9 +35,9 @@ class TaskRepository {
         });
     }
 
-    async findTaskById(taskId, ownerId) {
+    async findTaskById(taskId) {
         return await this.db.models.Task.findOne({
-            where: { id: taskId, ownerId }
+            where: { id: taskId }
         });
     }
 

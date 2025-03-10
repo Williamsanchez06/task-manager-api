@@ -19,8 +19,8 @@ const description = Joi.string().max(500).messages({
     "any.required": "La descripción es obligatoria"
 });
 
-const status = Joi.string().valid("pending", "completed").messages({
-    "any.only": "El estado debe ser 'pending' o 'completed'",
+const status = Joi.string().valid("PENDIENTE", "COMPLETADO").messages({
+    "any.only": "El estado debe ser 'PENDIENTE' o 'COMPLETADO'",
     "any.required": "El estado es obligatorio"
 });
 
