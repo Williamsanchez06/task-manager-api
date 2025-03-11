@@ -31,9 +31,5 @@ router.use((req, res) => {
     res.status(404).json({ message: "Ruta no encontrada" });
 });
 
-router.use((req, res) => {
-    res.status(500).json({ message: "Error interno en el servidor" });
-});
-
 export default router;
 
