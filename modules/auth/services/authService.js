@@ -1,11 +1,10 @@
-import { generateJWT } from "../utils/jwt.js";
+import { generateJWT } from "../../../utils/jwt.js";
 import boom from "@hapi/boom";
-import UserRepository from "../repositories/userRepository.js";
-import { comparePassword } from "../utils/bcrypt.js";
+import { comparePassword } from "../../../utils/bcrypt.js";
 
 class AuthService {
-    constructor(db) {
-        this.userRepository = new UserRepository(db);
+    constructor(userRepository) {
+        this.userRepository = userRepository;
     }
 
     async login(email, password) {

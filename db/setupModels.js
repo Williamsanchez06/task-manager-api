@@ -1,5 +1,5 @@
-import { User, UserSchema } from "../models/userModel.js";
-import {Task, TaskSchema} from "../models/taskModel.js";
+import { User, UserSchema } from "../modules/users/models/userModel.js";
+import {Task, TaskSchema} from "../modules/tasks/models/taskModel.js";
 
 function setupModels(db) {
 

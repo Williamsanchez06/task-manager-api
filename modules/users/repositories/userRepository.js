@@ -10,11 +10,10 @@ class UserRepository {
     async findAllUsers(userId) {
         return await this.db.models.User.findAll({
             where: {
-                id: { [this.db.Sequelize.Op.ne]: userId } // Filtra usuarios donde el id sea diferente al usuario autenticado
+                id: { [this.db.Sequelize.Op.ne]: userId } // Excluye el usuario autenticado
             }
         });
     }
-
 
     async findUserById(id) {
         return await this.db.models.User.findByPk(id);

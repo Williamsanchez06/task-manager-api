@@ -1,5 +1,5 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
-import { USER_TABLE } from "./userModel.js";
+import { USER_TABLE } from "../../users/models/userModel.js";
 
 const TASK_TABLE = "tasks";
 
