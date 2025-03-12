@@ -1,24 +1,24 @@
-import { Router } from "express";
-import validatorHandler from "../../../middlewares/validatorHandler.js";
+import express from "express";
+import JwtMiddleware from "../../../core/middlewares/jwtMiddleware.js";
+import ValidatorMiddleware from "../../../core/middlewares/validatorMiddleware.js";
 import { createUserSchema, getUserSchema } from "../validations/userValidation.js";
-import logger from "../../../utils/logger.js";
-import { validateJwtHandler } from "../../../middlewares/validateJwtHandler.js";
 
-export default (userController) => {
-  const router = Router();
+export default function userRouter(userController) {
+  const router = express.Router();
 
-  router.use((req, res, next) => {
-    logger.info(`Request received: ${req.method} ${req.originalUrl}`);
-    next();
-  });
+  //Rutas sin token
+  router.post("/", ValidatorMiddleware.validate(createUserSchema, "body"), userController.createUser);
 
-  router.get("/", validateJwtHandler, userController.getUsers);
-  router.get("/:id", validatorHandler(getUserSchema, "params"), validateJwtHandler, userController.getUserById);
-  router.post("/", validatorHandler(createUserSchema, "body"), userController.createUser);
+  // Aplicar protección con JWT en todas las demás rutas
+  router.use(JwtMiddleware.validateToken);
 
+  //Rutas protegidas con autenticación
+  router.get("/", userController.getUsers);
+  router.get("/:id", ValidatorMiddleware.validate(getUserSchema, "params"), userController.getUserById);
+
+  //Manejo de rutas no encontradas
   router.use((req, res) => {
-    res.status(404).json({ message: "Not Found" });
+      res.status(404).json({ message: "Ruta no encontrada" });
   });
-
   return router;
-};
+}

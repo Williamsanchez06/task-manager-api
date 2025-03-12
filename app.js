@@ -1,27 +1,19 @@
-import express from 'express';
-import corsMiddleware from './config/cors.js';
-import routerApi from './routes/index.js';
-import {
-    logErrors,
-    boomErrorHandler,
-    queryOrmErrorHandler,
-    generalErrorHandler,
-} from './middlewares/errorHandler.js';
-import {db} from "./db/db.js";
+// app.js
+import express from "express";
+import CoreModule from "./core/coreModule.js";
+import routerApi from "./routes/index.js";
 
 const app = express();
-
-// Middlewares
 app.use(express.json());
-app.use(corsMiddleware);
 
-// Rutas
-routerApi(app, db);
+// Inicializamos el CoreModule
+const core = new CoreModule(app);
+await core.initialize();
 
-// Manejo de errores
-app.use(logErrors);
-app.use(boomErrorHandler);
-app.use(queryOrmErrorHandler);
-app.use(generalErrorHandler);
+// Registrar rutas de la API
+routerApi(app, core.db.getInstance());
+
+// Registrar los middleware de error al final (después de las rutas)
+core.setupErrorHandlers();
 
 export default app;

@@ -1,24 +1,27 @@
 import express from "express";
-import validatorHandler from "../../../middlewares/validatorHandler.js";
+import JwtMiddleware from "../../../core/middlewares/jwtMiddleware.js";
+import ValidatorMiddleware from "../../../core/middlewares/validatorMiddleware.js";
 import { createTaskSchema, getTaskSchema, shareTaskSchema, updateTaskSchema } from "../validations/taskValidation.js";
-import { validateJwtHandler } from "../../../middlewares/validateJwtHandler.js";
-import logger from "../../../utils/logger.js";
 
-export default (taskController) => {
+export default function taskRouter(taskController) {
     const router = express.Router();
 
-    router.use((req, res, next) => {
-        logger.info(`Request received: ${req.method} ${req.originalUrl}`);
-        next();
+    // Rutas protegidas con JWT
+    router.use(JwtMiddleware.validateToken);
+
+    // Rutas de tareas
+    router.post("/", ValidatorMiddleware.validate(createTaskSchema, "body"), taskController.createTask);
+    router.get("/", taskController.getTasks);
+    router.get("/shared", taskController.getSharedTasks);
+    router.get("/:id", ValidatorMiddleware.validate(getTaskSchema, "params"), taskController.getTaskById);
+    router.put("/:id", ValidatorMiddleware.validate(updateTaskSchema, "body"), taskController.updateTask);
+    router.delete("/:id", taskController.deleteTask);
+    router.post("/:id/share", ValidatorMiddleware.validate(shareTaskSchema, "body"), taskController.shareTask);
+
+    // Manejo de rutas no encontradas
+    router.use((req, res) => {
+        res.status(404).json({ message: "Ruta no encontrada" });
     });
 
-    router.post("/", validateJwtHandler, validatorHandler(createTaskSchema, "body"), taskController.createTask);
-    router.get("/", validateJwtHandler, taskController.getTasks);
-    router.get("/shared", validateJwtHandler, taskController.getSharedTasks);
-    router.get("/:id", validateJwtHandler, validatorHandler(getTaskSchema, "params"), taskController.getTaskById);
-    router.put("/:id", validateJwtHandler, validatorHandler(updateTaskSchema, "body"), taskController.updateTask);
-    router.delete("/:id", validateJwtHandler, taskController.deleteTask);
-    router.post("/:id/share", validateJwtHandler, validatorHandler(shareTaskSchema, "body"), taskController.shareTask);
-
     return router;
-};
+}

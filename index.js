@@ -1,23 +1,22 @@
-import dotenv from 'dotenv';
-import app from './app.js'; // Importamos la app ya configurada
-import { dbConnection } from './db/db.js';
+import dotenv from "dotenv";
+import app from "./app.js";
+import logger from "./core/logger.js";
 
 dotenv.config();
 
-async function initialize() {
+async function startServer() {
   try {
-    // Inicializa la base de datos
-    await dbConnection();
-
     const PORT = process.env.PORT || 3000;
+
     app.listen(PORT, () => {
-      console.log(`Servidor corriendo en el puerto ${PORT}`);
-      console.log(`Entorno: ${process.env.NODE_ENV}`);
+      logger.info(`Servidor corriendo en el puerto ${PORT}`);
+      logger.info(`Entorno: ${process.env.NODE_ENV || "development"}`);
     });
   } catch (error) {
-    console.error('Error durante la inicialización del servidor:', error);
+    logger.error("Error al iniciar el servidor:", error);
     process.exit(1);
   }
 }
 
-initialize();
+// Iniciar el servidor
+startServer();

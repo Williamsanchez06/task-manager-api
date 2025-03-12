@@ -1,23 +1,19 @@
 import express from "express";
-import validatorHandler from "../../../middlewares/validatorHandler.js";
-import logger from "../../../utils/logger.js";
-import { validateJwtHandler } from "../../../middlewares/validateJwtHandler.js";
-import {loginSchema} from "../validations/authValidation.js";
+import JwtMiddleware from "../../../core/middlewares/jwtMiddleware.js";
+import ValidatorMiddleware from "../../../core/middlewares/validatorMiddleware.js";
+import { loginSchema } from "../validations/authValidation.js";
 
-const router = express.Router();
+export default function authRouter(authController) {
+    const router = express.Router();
 
-export default (authController) => {
-    router.use((req, res, next) => {
-        logger.info(`Request received: ${req.method} ${req.originalUrl}`);
-        next();
-    });
+    // Rutas de autenticación
+    router.post("/", ValidatorMiddleware.validate(loginSchema, "body"), authController.login);
+    router.post("/renew-token", JwtMiddleware.validateToken, authController.renewToken);
 
-    router.post("/", validatorHandler(loginSchema, "body"), authController.login);
-    router.post("/renew-token", validateJwtHandler, authController.renewToken);
-
+    // Manejo de rutas no encontradas en Auth
     router.use((req, res) => {
         res.status(404).json({ message: "Ruta no encontrada" });
     });
 
     return router;
-};
+}
