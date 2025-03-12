@@ -74,6 +74,8 @@ class Database {
             logger.info("Conexión exitosa a la base de datos.");
             this.connected = true;
             setupModels.initialize(this.sequelize);
+            await this.sequelize.sync();
+            logger.info("Modelos sincronizados correctamente.");
         } catch (error) {
             console.log("errror", error);
             logger.error("Error al conectar con la base de datos:", error);
