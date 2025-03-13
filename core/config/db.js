@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 import setupModels from "./setupModels.js";
 import logger from "../logger.js";
+import pg from 'pg';
 
 dotenv.config();
 
