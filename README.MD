@@ -10,13 +10,6 @@ API RESTful construida con **Node.js** y **Express** para la gestión de usuario
 - [Instalación](#instalación)
 - [Configuración](#configuración)
 - [Ejecución](#ejecución)
-- [Estructura de Carpetas](#estructura-de-carpetas)
-- [Endpoints Principales](#endpoints-principales)
-    - [Usuarios](#usuarios)
-    - [Tareas](#tareas)
-    - [Autenticación](#autenticación)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
 
 ---
 
