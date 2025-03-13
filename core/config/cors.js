@@ -2,7 +2,9 @@ import cors from "cors";
 
 class CorsConfig {
     constructor() {
-        this.whiteList = ["http://localhost:4200"];
+        this.whiteList = process.env.CORS_WHITELIST
+            ? process.env.CORS_WHITELIST.split(",")
+            : ["http://localhost:4200"];
         this.options = {
             origin: this.validateOrigin.bind(this),
         };
